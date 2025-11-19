@@ -2,6 +2,8 @@
 #include <time.h>
 using namespace sf;
 
+void setupTile(int t_uncovered[][12], int t_game[][12]);
+
 int minesweeper()
 {
     srand(time(0));
@@ -16,13 +18,15 @@ int minesweeper()
     t.loadFromFile("images/minesweeper/tiles.jpg");
     Sprite tile(t);
 
-    for (int row=1;row<=10;row++) // 10 = covered tile
-     for (int column=1;column<=10;column++)
-      {
-        gameGrid[row][column]=10;
-        if (rand()%5==0)  uncoveredGrid[row][column]=9; // 9 = bomb
-        else uncoveredGrid[row][column]=0;
-      }
+    //for (int row=1;row<=10;row++) // 10 = covered tile
+    // for (int column=1;column<=10;column++)
+    //  {
+    //    gameGrid[row][column]=10;
+    //    if (rand()%5==0)  uncoveredGrid[row][column]=9; // 9 = bomb
+    //    else uncoveredGrid[row][column]=0;
+    //  }
+
+   setupTile(uncoveredGrid, gameGrid);
 
     for (int row=1;row<=10;row++) // checks for adjecant bombs
      for (int column=1;column<=10;column++)
@@ -72,4 +76,15 @@ int minesweeper()
     }
 
     return 0;
+}
+
+void setupTile(int t_uncovered[][12], int t_game[][12])
+{
+    for (int row = 1; row <= 10; row++) // 10 = covered tile
+        for (int column = 1; column <= 10; column++)
+        {
+            t_game[row][column] = 10;
+            if (rand() % 5 == 0)  t_uncovered[row][column] = 9; // 9 = bomb
+            else t_uncovered[row][column] = 0;
+        }
 }
