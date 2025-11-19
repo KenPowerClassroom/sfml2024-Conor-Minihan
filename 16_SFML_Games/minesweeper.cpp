@@ -8,43 +8,43 @@ int minesweeper()
 
     RenderWindow app(VideoMode(400, 400), "Minesweeper!");
 
-    int w=32; // width of tile
-    int grid[12][12]; // bombs and numbers
-    int sgrid[12][12]; // covered tiles
+    int tileWidth=32; // width of tile
+    int uncoveredGrid[12][12]; // bombs and numbers
+    int gameGrid[12][12]; // covered tiles
 
     Texture t;
     t.loadFromFile("images/minesweeper/tiles.jpg");
-    Sprite s(t);
+    Sprite tile(t);
 
-    for (int i=1;i<=10;i++) // 10 = covered tile
-     for (int j=1;j<=10;j++)
+    for (int row=1;row<=10;row++) // 10 = covered tile
+     for (int column=1;column<=10;column++)
       {
-        sgrid[i][j]=10;
-        if (rand()%5==0)  grid[i][j]=9; // 9 = bomb
-        else grid[i][j]=0;
+        gameGrid[row][column]=10;
+        if (rand()%5==0)  uncoveredGrid[row][column]=9; // 9 = bomb
+        else uncoveredGrid[row][column]=0;
       }
 
-    for (int i=1;i<=10;i++) // checks for adjecant bombs
-     for (int j=1;j<=10;j++)
+    for (int row=1;row<=10;row++) // checks for adjecant bombs
+     for (int column=1;column<=10;column++)
       {
         int n=0;
-        if (grid[i][j]==9) continue;
-        if (grid[i+1][j]==9) n++;
-        if (grid[i][j+1]==9) n++;
-        if (grid[i-1][j]==9) n++;
-        if (grid[i][j-1]==9) n++;
-        if (grid[i+1][j+1]==9) n++;
-        if (grid[i-1][j-1]==9) n++;
-        if (grid[i-1][j+1]==9) n++;
-        if (grid[i+1][j-1]==9) n++;
-        grid[i][j]=n;
+        if (uncoveredGrid[row][column]==9) continue;
+        if (uncoveredGrid[row+1][column]==9) n++;
+        if (uncoveredGrid[row][column+1]==9) n++;
+        if (uncoveredGrid[row-1][column]==9) n++;
+        if (uncoveredGrid[row][column-1]==9) n++;
+        if (uncoveredGrid[row+1][column+1]==9) n++;
+        if (uncoveredGrid[row-1][column-1]==9) n++;
+        if (uncoveredGrid[row-1][column+1]==9) n++;
+        if (uncoveredGrid[row+1][column-1]==9) n++;
+        uncoveredGrid[row][column]=n;
       }
 
     while (app.isOpen())
     {
         Vector2i pos = Mouse::getPosition(app);
-        int x = pos.x/w;
-        int y = pos.y/w;
+        int x = pos.x/tileWidth;
+        int y = pos.y/tileWidth;
 
         Event e;
         while (app.pollEvent(e))
@@ -53,19 +53,19 @@ int minesweeper()
                 app.close();
 
             if (e.type == Event::MouseButtonPressed)
-              if (e.key.code == Mouse::Left) sgrid[x][y]=grid[x][y]; // reveals square
-              else if (e.key.code == Mouse::Right) sgrid[x][y]=11; // places flag
+              if (e.key.code == Mouse::Left) gameGrid[x][y]=uncoveredGrid[x][y]; // reveals square
+              else if (e.key.code == Mouse::Right) gameGrid[x][y]=11; // places flag
         }
 
         app.clear(Color::White);
 
-        for (int i=1;i<=10;i++)
-         for (int j=1;j<=10;j++)
+        for (int row=1;row<=10;row++)
+         for (int column=1;column<=10;column++)
           {
-           if (sgrid[x][y]==9) sgrid[i][j]=grid[i][j]; // uncovers board if bomb is selected
-           s.setTextureRect(IntRect(sgrid[i][j]*w,0,w,w));// otherwise fills board normally
-           s.setPosition(i*w, j*w);
-           app.draw(s);
+           if (gameGrid[x][y]==9) gameGrid[row][column]=uncoveredGrid[row][column]; // uncovers board if bomb is selected
+           tile.setTextureRect(IntRect(gameGrid[row][column]*tileWidth,0,tileWidth,tileWidth));// otherwise fills board normally
+           tile.setPosition(row*tileWidth, column*tileWidth);
+           app.draw(tile);
           }
 
         app.display();
