@@ -6,17 +6,25 @@ const int tileSize = 18;
 
 #include"../16_SFML_Games/Grid.h"
 #include"../16_SFML_Games/Player.h"
+#include "../16_SFML_Games/minesweeper.cpp"
 
 
-//TEST(Grid, HasWallsAndInterior) {
-//
-//	Grid grid;
-//
-//	EXPECT_EQ(Grid::tile::WALL, grid.cell(0, 0));
-//	EXPECT_EQ(Grid::tile::WALL, grid.cell(24, 39));
-//	EXPECT_EQ(Grid::tile::EMPTY, grid.cell(10, 10));
-//
-//}
+TEST(setupTiles, setup) {
+	int uncovered[12][12];
+	int gameGrid[12][12]; 
+	setupTiles(uncovered, gameGrid);
+	EXPECT_EQ(10, gameGrid[1][1]);
+}
+
+TEST(Grid, HasWallsAndInterior) {
+
+	Grid grid;
+
+	EXPECT_EQ(Grid::tile::WALL, grid.cell(0, 0));
+	EXPECT_EQ(Grid::tile::WALL, grid.cell(24, 39));
+	EXPECT_EQ(Grid::tile::EMPTY, grid.cell(10, 10));
+
+}
 //
 //TEST(Grid, CreateNewWall) {
 //

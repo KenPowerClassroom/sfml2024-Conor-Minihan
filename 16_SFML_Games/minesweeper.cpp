@@ -63,7 +63,7 @@ void setupTiles(int t_uncovered[][12], int t_game[][12])
             if (rand() % 5 == 0)  t_uncovered[row][column] = 9; // 9 = bomb
             else t_uncovered[row][column] = 0;
         }
-
+    t_uncovered[1][1] = 9;
     for (int row = 1; row <= 10; row++) // checks for adjecant bombs
         for (int column = 1; column <= 10; column++)
         {
@@ -80,5 +80,3 @@ void setupTiles(int t_uncovered[][12], int t_game[][12])
             t_uncovered[row][column] = n;
         }
 }
-
-
